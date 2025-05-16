@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Estudiante } from './estudiante.entity';
+import { EstudianteEntity } from './estudiante.entity';
 
 @Entity()
-export class Actividad {
+export class ActividadEntity {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
@@ -19,8 +19,8 @@ export class Actividad {
   estado: number;
 
   @ManyToMany(
-    () => Estudiante,
-    (estudiante: Estudiante) => estudiante.actividades,
+    () => EstudianteEntity,
+    (estudiante: EstudianteEntity) => estudiante.actividades,
   )
-  estudiantes: Estudiante[];
+  estudiantes: EstudianteEntity[];
 }
