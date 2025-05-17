@@ -21,7 +21,10 @@ export class EstudianteController {
 
   @HttpCode(HttpStatus.OK)
   @Post(':/estudianteId/actividades/:actividadId')
-  inscribirseActividad(@Param('estudianteId') estudianteId: number, @Param('actividadId') actividadId: number) {
+  inscribirseActividad(
+    @Param('estudianteId') estudianteId: number,
+    @Param('actividadId') actividadId: number,
+  ) {
     return this.estudianteService.inscribirseActividad(
       estudianteId,
       actividadId,
