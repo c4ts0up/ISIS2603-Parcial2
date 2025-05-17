@@ -1,10 +1,11 @@
-import { IsInt, IsNotEmpty } from 'class-validator';
+import { IsAlphanumeric, IsInt, IsNotEmpty, MinLength } from 'class-validator';
 import { Expose } from 'class-transformer';
 
 export class ActividadDto {
   @Expose()
   @IsNotEmpty()
-  @MinLength()
+  @MinLength(15)
+  @IsAlphanumeric()
   titulo: string;
 
   @Expose()

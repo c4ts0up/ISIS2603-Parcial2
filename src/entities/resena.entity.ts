@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { EstudianteEntity } from './estudiante.entity';
+import { ActividadEntity } from './actividad.entity';
 
 @Entity()
 export class ResenaEntity {
@@ -24,4 +25,14 @@ export class ResenaEntity {
     },
   )
   estudiante: EstudianteEntity;
+
+  @ManyToOne(
+    () => ActividadEntity,
+    (actividad: ActividadEntity) => actividad.resenas,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
+  actividad: ActividadEntity;
 }

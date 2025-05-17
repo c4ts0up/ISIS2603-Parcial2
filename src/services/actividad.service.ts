@@ -1,5 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ActividadEntity } from '../entities/actividad.entity';
 import { ActividadDto } from '../dto/actividad.dto';
 import { Repository } from 'typeorm';
@@ -42,6 +46,8 @@ export class ActividadService {
   }
 
   async findAllActividadesByDate(fecha: string) {
-    return await this.actividadRepository.findOne;
+    return await this.actividadRepository.find({
+      where: { fecha: fecha },
+    });
   }
 }
