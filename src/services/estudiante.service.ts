@@ -3,7 +3,7 @@ import { EstudianteEntity } from '../entities/estudiante.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ActividadEntity } from '../entities/actividad.entity';
-import { EstudianteDto } from '../dto/estudiante.dto';
+import { EstudianteDto } from '../dtos/estudiante.dto';
 import { ActividadService } from './actividad.service';
 
 @Injectable()

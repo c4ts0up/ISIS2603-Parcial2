@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ActividadEntity } from '../entities/actividad.entity';
-import { ActividadDto } from '../dto/actividad.dto';
+import { ActividadDto } from '../dtos/actividad.dto';
 import { Repository } from 'typeorm';
 
 @Injectable()

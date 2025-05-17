@@ -1,7 +1,7 @@
 import { ResenaEntity } from '../entities/resena.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ResenaDto } from '../dto/resena.dto';
+import { ResenaDto } from '../dtos/resena.dto';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { ActividadService } from './actividad.service';
 import { EstudianteService } from './estudiante.service';
