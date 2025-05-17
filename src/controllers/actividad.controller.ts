@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ActividadService } from '../services/actividad.service';
 import { ActividadDto } from '../dtos/actividad.dto';
 
@@ -26,7 +34,10 @@ export class ActividadController {
 
   @HttpCode(HttpStatus.OK)
   @Post(':actividadId/estado')
-  cambiarEstado(@Param('actividadId') actividadId: number, @Param('estado') @Body() estado: number) {
+  cambiarEstado(
+    @Param('actividadId') actividadId: number,
+    @Param('estado') @Body() estado: number,
+  ) {
     return this.actividadService.cambiarEstado(actividadId, estado);
   }
 }

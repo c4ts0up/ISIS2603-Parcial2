@@ -20,7 +20,7 @@ export class EstudianteController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post(':/estudianteId/actividades/:actividadId')
+  @Post(':estudianteId/actividades/:actividadId')
   inscribirseActividad(
     @Param('estudianteId') estudianteId: number,
     @Param('actividadId') actividadId: number,

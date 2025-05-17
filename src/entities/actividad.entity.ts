@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { EstudianteEntity } from './estudiante.entity';
 import { ResenaEntity } from './resena.entity';
 
