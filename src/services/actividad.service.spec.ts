@@ -2,7 +2,11 @@ import { EstudianteEntity } from '../entities/estudiante.entity';
 import { ActividadService } from './actividad.service';
 import { Repository } from 'typeorm';
 import { ActividadEntity } from '../entities/actividad.entity';
-import { BadRequestException, ConflictException, ValidationPipe } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActividadDto } from '../dtos/actividad.dto';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -46,6 +50,7 @@ describe('ActividadService', () => {
 
   describe('crearEstudiante', () => {
     let mockActividad: ActividadDto;
+    let mockActividadEntity: ActividadEntity;
 
     beforeEach(() => {
       jest.clearAllMocks();
@@ -57,9 +62,16 @@ describe('ActividadService', () => {
         estado: 0,
       };
 
+      mockActividadEntity = {
+        id: 1,
+        estudiantes: [],
+        resenas: [],
+        ...mockActividad,
+      };
+
       jest
         .spyOn(actividadRepository, 'save')
-        .mockResolvedValue(mockActividad as ActividadEntity);
+        .mockResolvedValue(mockActividadEntity);
       jest
         .spyOn(actividadRepository, 'create')
         .mockReturnValue(mockActividad as ActividadEntity);
@@ -69,10 +81,10 @@ describe('ActividadService', () => {
       const result = await service.crearActividad(mockActividad);
 
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(actividadRepository.save).toHaveBeenCalledWith({
-        ...mockActividad,
-      });
-      expect(result).toBe(mockActividad as ActividadEntity);
+      expect(actividadRepository.save).toHaveBeenCalledWith(
+        mockActividad as ActividadEntity,
+      );
+      expect(result).toBe(mockActividadEntity);
     });
 
     it('titulo tiene menos de 15 caracteres', async () => {
@@ -101,6 +113,156 @@ describe('ActividadService', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(BadRequestException);
       }
+    });
+  });
+
+  describe('cambiarEstado', () => {
+    let mockActividad: ActividadDto;
+    let mockActividadEntity: ActividadEntity;
+    let mockEstudiantes: EstudianteEntity[];
+
+    beforeEach(() => {
+      mockActividad = {
+        titulo: 'Plastilina Galáctica',
+        fecha: '2100-11-30',
+        cupoMaximo: 5,
+        estado: 0,
+      };
+
+      mockEstudiantes = [
+        {
+          id: 1,
+          numeroCedula: 1,
+          nombre: 'Student 1',
+          correo: 'student1@example.com',
+          programa: 'Program 1',
+          semestre: 1,
+          resenas: [],
+          actividades: [],
+        },
+        {
+          id: 2,
+          numeroCedula: 2,
+          nombre: 'Student 2',
+          correo: 'student2@example.com',
+          programa: 'Program 2',
+          semestre: 2,
+          resenas: [],
+          actividades: [],
+        },
+        {
+          id: 3,
+          numeroCedula: 3,
+          nombre: 'Student 3',
+          correo: 'student3@example.com',
+          programa: 'Program 3',
+          semestre: 3,
+          resenas: [],
+          actividades: [],
+        },
+        {
+          id: 4,
+          numeroCedula: 4,
+          nombre: 'Student 4',
+          correo: 'student4@example.com',
+          programa: 'Program 4',
+          semestre: 4,
+          resenas: [],
+          actividades: [],
+        },
+      ];
+
+      mockActividadEntity = {
+        ...mockActividad,
+        id: 1,
+        estudiantes: mockEstudiantes,
+        resenas: [],
+      };
+
+      jest
+        .spyOn(actividadRepository, 'findOne')
+        .mockResolvedValue(mockActividadEntity);
+      jest
+        .spyOn(actividadRepository, 'save')
+        .mockResolvedValue(mockActividadEntity);
+    });
+
+    describe('finalizada', () => {
+      it('finalizada exitosamente', async () => {
+        // el estado no interesa, únicamente si no hay cupo
+        mockActividadEntity.cupoMaximo = mockEstudiantes.length;
+        mockActividadEntity.estado = 1;
+
+        const result = await service.cambiarEstado(mockActividadEntity.id, 2);
+
+        expect(result.estado).toBe(2);
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(actividadRepository.save).toHaveBeenCalledWith(
+          mockActividadEntity,
+        );
+      });
+
+      it('hay cupos', async () => {
+        mockActividadEntity.cupoMaximo = mockEstudiantes.length + 1;
+        mockActividadEntity.estado = 1;
+
+        await expect(
+          service.cambiarEstado(mockActividadEntity.id, 2),
+        ).rejects.toThrow(ConflictException);
+      });
+
+      it('cambio inválido (ya fue finalizada)', async () => {
+        mockActividadEntity.cupoMaximo = mockEstudiantes.length + 1;
+        mockActividadEntity.estado = 2;
+
+        await expect(
+          service.cambiarEstado(mockActividadEntity.id, 2),
+        ).rejects.toThrow(BadRequestException);
+      });
+    });
+
+    describe('cerrada', () => {
+      it('cerrada exitosamente', async () => {
+        // == 80% del cupo para que se cierre exitosamente
+        mockActividadEntity.cupoMaximo = mockEstudiantes.length + 1;
+        mockActividadEntity.estado = 0;
+
+        const result1 = await service.cambiarEstado(mockActividadEntity.id, 1);
+
+        expect(result1.estado).toBe(1);
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(actividadRepository.save).toHaveBeenCalledWith(
+          mockActividadEntity,
+        );
+
+        // > 80% del cupo para que se cierre exitosamente
+        mockActividadEntity.cupoMaximo = mockEstudiantes.length;
+        mockActividadEntity.estado = 0;
+
+        const result2 = await service.cambiarEstado(mockActividadEntity.id, 1);
+
+        expect(result2.estado).toBe(1);
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(actividadRepository.save).toHaveBeenCalled();
+      });
+
+      it('<80% del cupo está lleno', async () => {
+        mockActividadEntity.cupoMaximo = mockEstudiantes.length + 100;
+        mockActividadEntity.estado = 0;
+
+        await expect(
+          service.cambiarEstado(mockActividadEntity.id, 1),
+        ).rejects.toThrow(ConflictException);
+      });
+
+      it('cambio inválido (ya fue cerrada)', async () => {
+        mockActividadEntity.cupoMaximo = mockEstudiantes.length + 100;
+        mockActividadEntity.estado = 1;
+
+        await expect(
+          service.cambiarEstado(mockActividadEntity.id, 1),
+        ).rejects.toThrow(BadRequestException);
+      });
     });
   });
 });

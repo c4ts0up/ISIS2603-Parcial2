@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  BadRequestException,
+  BadRequestException, ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -15,9 +15,10 @@ export class ActividadService {
     private readonly actividadRepository: Repository<ActividadEntity>,
   ) {}
 
-  async crearActividad(actividadDto: ActividadDto) {
+  async crearActividad(actividadDto: ActividadDto): Promise<ActividadEntity> {
+    const actividad = this.actividadRepository.create(actividadDto);
     // reglas de validación en el DTO
-    return await this.actividadRepository.save(actividadDto);
+    return await this.actividadRepository.save(actividad);
   }
 
   async findActividadById(actividadId: number) {
@@ -32,17 +33,38 @@ export class ActividadService {
     return actividad;
   }
 
-  async cambiarEstado(actividadId: number, estado: number) {
+  async cambiarEstado(
+    actividadId: number,
+    estado: number,
+  ): Promise<ActividadEntity> {
     if (estado !== 0 && estado !== 1 && estado !== 2) {
       throw new BadRequestException('El número del estado no es válido');
     }
 
-    // validación de existencia
-    await this.findActividadById(actividadId);
+    // valida existencia de paso
+    const actividad = await this.findActividadById(actividadId);
 
-    await this.actividadRepository.update(actividadId, {
-      estado: estado,
-    });
+    // cambio de estado inválido
+    if (actividad.estado >= estado) {
+      throw new BadRequestException('Cambio de estado inválido');
+    } else if (
+      actividad.estado === 0 &&
+      actividad.estudiantes.length / actividad.cupoMaximo < 0.8
+    ) {
+      throw new ConflictException(
+        'El cupo necesario para cerrar no ha sido alcanzado',
+      );
+    } else if (
+      actividad.estado === 1 &&
+      actividad.estudiantes.length < actividad.cupoMaximo
+    ) {
+      throw new ConflictException(
+        'No se puede finalizar una actividad con cupos disponibles'
+      );
+    }
+
+    actividad.estado = estado;
+    return await this.actividadRepository.save(actividad);
   }
 
   async findAllActividadesByDate(fecha: string) {
