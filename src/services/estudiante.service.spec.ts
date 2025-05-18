@@ -13,7 +13,6 @@ describe('EstudianteService', () => {
   let service: EstudianteService;
   let estudianteRepository: Repository<EstudianteEntity>;
   let actividadRepository: Repository<ActividadEntity>;
-  let actividadService: ActividadService;
 
   let mockEstudianteDto: EstudianteDto;
   let mockEstudianteEntity: EstudianteEntity;
@@ -28,7 +27,6 @@ describe('EstudianteService', () => {
       ],
     }).compile();
 
-    actividadService = module.get(ActividadService);
     service = module.get(EstudianteService);
     actividadRepository = module.get<Repository<ActividadEntity>>(
       getRepositoryToken(ActividadEntity),

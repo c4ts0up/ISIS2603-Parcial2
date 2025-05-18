@@ -4,8 +4,8 @@ import { Expose } from 'class-transformer';
 export class ActividadDto {
   @Expose()
   @IsNotEmpty()
-  @MinLength(15)
   @IsAlphanumeric()
+  @MinLength(15)
   titulo: string;
 
   @Expose()

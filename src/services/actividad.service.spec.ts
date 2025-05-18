@@ -15,7 +15,6 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 describe('ActividadService', () => {
   let service: ActividadService;
   let actividadRepository: Repository<ActividadEntity>;
-  let estudianteRepository: Repository<EstudianteEntity>;
 
   let validationPipe: ValidationPipe;
 
@@ -31,9 +30,6 @@ describe('ActividadService', () => {
     service = module.get(ActividadService);
     actividadRepository = module.get<Repository<ActividadEntity>>(
       getRepositoryToken(ActividadEntity),
-    );
-    estudianteRepository = module.get<Repository<EstudianteEntity>>(
-      getRepositoryToken(EstudianteEntity),
     );
 
     // inicializar pipeline de validación

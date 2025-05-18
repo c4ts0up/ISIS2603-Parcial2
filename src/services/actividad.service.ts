@@ -1,6 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-  BadRequestException, ConflictException,
+  BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -59,7 +60,7 @@ export class ActividadService {
       actividad.estudiantes.length < actividad.cupoMaximo
     ) {
       throw new ConflictException(
-        'No se puede finalizar una actividad con cupos disponibles'
+        'No se puede finalizar una actividad con cupos disponibles',
       );
     }
 

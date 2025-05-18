@@ -14,15 +14,21 @@ export class ResenaService {
     private estudianteService: EstudianteService,
   ) {}
 
-  async agregarResena(resenaDto: ResenaDto) {
-    // FIXME: la creación es correcta?
+  async agregarResena(
+    actividadId: number,
+    resenaDto: ResenaDto,
+  ): Promise<ResenaEntity> {
+    // valida la existencia de actividad y estudiante, de paso
+    const actividad = await this.actividadService.findActividadById(actividadId);
+    const estudiante = await this.estudianteService.findEstudianteById(resenaDto.estudianteId);
+
     const resena = this.resenaRepository.create(resenaDto);
 
     if (resena.actividad.estado !== 2) {
-      throw new ConflictException('La actividad no está finalizada');
-    }
-
-    if (
+      throw new ConflictException(
+        'No se puede agregar una reseña a una actividad no finalizada.',
+      );
+    } else if (
       resena.actividad.estudiantes.find(
         (estudiante) => estudiante.id === resena.estudiante.id,
       ) === undefined
@@ -32,7 +38,7 @@ export class ResenaService {
       );
     }
 
-    await this.resenaRepository.save(resena);
+    return await this.resenaRepository.save(resena);
   }
 
   // instrucciones decían findClaseById, pero este nombre tiene más sentido
