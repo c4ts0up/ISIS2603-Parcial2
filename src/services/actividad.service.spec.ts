@@ -5,6 +5,7 @@ import { ActividadEntity } from '../entities/actividad.entity';
 import {
   BadRequestException,
   ConflictException,
+  NotFoundException,
   ValidationPipe,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -263,6 +264,45 @@ describe('ActividadService', () => {
           service.cambiarEstado(mockActividadEntity.id, 1),
         ).rejects.toThrow(BadRequestException);
       });
+    });
+  });
+
+  describe('findActividadById', () => {
+    let mockActividad: ActividadDto;
+    let mockActividadEntity: ActividadEntity;
+
+    beforeEach(() => {
+      mockActividad = {
+        titulo: 'Plastilina Galáctica',
+        fecha: '2100-11-30',
+        cupoMaximo: 5,
+        estado: 0,
+      };
+
+      mockActividadEntity = {
+        ...mockActividad,
+        id: 1,
+        estudiantes: [],
+        resenas: [],
+      };
+
+      jest
+        .spyOn(actividadRepository, 'findOne')
+        .mockResolvedValue(mockActividadEntity);
+    });
+
+    it('existe', async () => {
+      const result = await service.findActividadById(mockActividadEntity.id);
+
+      expect(result).toBe(mockActividadEntity);
+    });
+
+    it('no existe', async () => {
+      jest.spyOn(actividadRepository, 'findOne').mockResolvedValue(null);
+
+      await expect(
+        service.findActividadById(mockActividadEntity.id),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });
