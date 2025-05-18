@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import { ActividadService } from '../services/actividad.service';
 import { ActividadDto } from '../dtos/actividad.dto';
@@ -33,7 +34,7 @@ export class ActividadController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post(':actividadId/estado')
+  @Put(':actividadId/estado')
   cambiarEstado(
     @Param('actividadId') actividadId: number,
     @Param('estado') @Body() estado: number,
