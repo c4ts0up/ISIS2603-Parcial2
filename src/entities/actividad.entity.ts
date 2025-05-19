@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -29,6 +30,17 @@ export class ActividadEntity {
     () => EstudianteEntity,
     (estudiante: EstudianteEntity) => estudiante.actividades,
   )
+  @JoinTable({
+    name: 'actividad_estudiante',
+    joinColumn: {
+      name: 'actividadId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'estudianteId',
+      referencedColumnName: 'id',
+    },
+  })
   estudiantes: EstudianteEntity[];
 
   @OneToMany(() => ResenaEntity, (resena: ResenaEntity) => resena.actividad)

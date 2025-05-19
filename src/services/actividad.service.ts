@@ -25,6 +25,7 @@ export class ActividadService {
   async findActividadById(actividadId: number) {
     const actividad = await this.actividadRepository.findOne({
       where: { id: actividadId },
+      relations: ['estudiantes', 'resenas'],
     });
 
     if (actividad === null) {
@@ -38,6 +39,8 @@ export class ActividadService {
     actividadId: number,
     estado: number,
   ): Promise<ActividadEntity> {
+    console.log('Estado: ', estado);
+    console.log('Type of estado: ', typeof estado);
     if (estado !== 0 && estado !== 1 && estado !== 2) {
       throw new BadRequestException('El número del estado no es válido');
     }

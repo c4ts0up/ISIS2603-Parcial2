@@ -38,7 +38,7 @@ export class ActividadController {
   @Put(':actividadId/estado')
   cambiarEstado(
     @Param('actividadId') actividadId: number,
-    @Param('estado') @Body() estado: number,
+    @Body('estado') estado: number,
   ) {
     return this.actividadService.cambiarEstado(actividadId, estado);
   }

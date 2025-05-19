@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -17,6 +18,12 @@ export class EstudianteController {
   @Post('')
   crearEstudiante(@Body() estudianteDto: EstudianteDto) {
     return this.estudianteService.crearEstudiante(estudianteDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get(':estudianteId')
+  findEstudianteById(@Param('estudianteId') estudianteId: number) {
+    return this.estudianteService.findEstudianteById(estudianteId);
   }
 
   @HttpCode(HttpStatus.OK)

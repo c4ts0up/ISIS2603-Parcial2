@@ -16,19 +16,21 @@ export class ResenaService {
 
   async agregarResena(resenaDto: ResenaDto): Promise<ResenaEntity> {
     // valida la existencia de actividad y estudiante, de paso
-    await this.actividadService.findActividadById(resenaDto.actividadId);
-    await this.estudianteService.findEstudianteById(resenaDto.estudianteId);
+    const actividad = await this.actividadService.findActividadById(
+      resenaDto.actividadId,
+    );
+    const estudiante = await this.estudianteService.findEstudianteById(
+      resenaDto.estudianteId,
+    );
 
     const resena = this.resenaRepository.create(resenaDto);
 
-    if (resena.actividad.estado !== 2) {
+    if (actividad.estado !== 2) {
       throw new ConflictException(
         'No se puede agregar una reseña a una actividad no finalizada.',
       );
     } else if (
-      resena.actividad.estudiantes.find(
-        (estudiante) => estudiante.id === resena.estudiante.id,
-      ) === undefined
+      actividad.estudiantes.find((e) => e.id === estudiante.id) === undefined
     ) {
       throw new ConflictException(
         'El estudiante no estuvo inscrito en la actividad',
@@ -42,6 +44,7 @@ export class ResenaService {
   async findResenaById(resenaId: number) {
     const resena = await this.resenaRepository.findOne({
       where: { id: resenaId },
+      relations: ['estudiante', 'actividad'],
     });
 
     if (resena === null) {

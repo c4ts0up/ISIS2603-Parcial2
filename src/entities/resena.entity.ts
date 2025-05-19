@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { EstudianteEntity } from './estudiante.entity';
 import { ActividadEntity } from './actividad.entity';
 
@@ -24,6 +30,7 @@ export class ResenaEntity {
       onUpdate: 'CASCADE',
     },
   )
+  @JoinColumn({ name: 'estudianteId' })
   estudiante: EstudianteEntity;
 
   @ManyToOne(
@@ -34,5 +41,6 @@ export class ResenaEntity {
       onUpdate: 'CASCADE',
     },
   )
+  @JoinColumn({ name: 'actividadId' })
   actividad: ActividadEntity;
 }

@@ -31,6 +31,7 @@ export class EstudianteService {
   async findEstudianteById(idEstudiante: number): Promise<EstudianteEntity> {
     const estudiante = await this.estudianteRepository.findOne({
       where: { id: idEstudiante },
+      relations: ['actividades', 'resenas'],
     });
 
     if (estudiante === null) {
