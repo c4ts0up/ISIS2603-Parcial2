@@ -8,10 +8,13 @@ import { ResenaEntity } from './entities/resena.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EstudianteEntity } from './entities/estudiante.entity';
 import { ActividadEntity } from './entities/actividad.entity';
+import { ActividadController } from './controllers/actividad.controller';
+import { ResenaController } from './controllers/resenas.controllers';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       type: process.env.DB_TYPE as any,
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT ?? '5432', 10), //FIXME: there should be better handling here
@@ -24,7 +27,7 @@ import { ActividadEntity } from './entities/actividad.entity';
     }),
     TypeOrmModule.forFeature([EstudianteEntity, ActividadEntity, ResenaEntity]),
   ],
-  controllers: [EstudianteController],
+  controllers: [EstudianteController, ActividadController, ResenaController],
   exports: [ActividadService, EstudianteService, ResenaService],
   providers: [AppService, ActividadService, EstudianteService, ResenaService],
 })

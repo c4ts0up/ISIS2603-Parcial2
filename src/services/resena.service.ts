@@ -14,13 +14,10 @@ export class ResenaService {
     private estudianteService: EstudianteService,
   ) {}
 
-  async agregarResena(
-    actividadId: number,
-    resenaDto: ResenaDto,
-  ): Promise<ResenaEntity> {
+  async agregarResena(resenaDto: ResenaDto): Promise<ResenaEntity> {
     // valida la existencia de actividad y estudiante, de paso
-    const actividad = await this.actividadService.findActividadById(actividadId);
-    const estudiante = await this.estudianteService.findEstudianteById(resenaDto.estudianteId);
+    await this.actividadService.findActividadById(resenaDto.actividadId);
+    await this.estudianteService.findEstudianteById(resenaDto.estudianteId);
 
     const resena = this.resenaRepository.create(resenaDto);
 

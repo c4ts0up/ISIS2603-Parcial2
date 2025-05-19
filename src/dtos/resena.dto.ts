@@ -16,10 +16,14 @@ export class ResenaDto {
   fecha: string;
 
   /*
-  en este escenario, la reseña es una subclase de la actividad, no del estudiante.
-  Por lo tanto, el estudianteId se pasa como cuerpo y la actividad como parámetro.
+  dada la elección de manejar las reseñas bajo su propio recurso (y no como
+  sub recursos de Estudiante o Actividad), se pasarán ambos IDs en el cuerpo
    */
   @Expose()
   @IsNotEmpty()
   estudianteId: number;
+
+  @Expose()
+  @IsNotEmpty()
+  actividadId: number;
 }

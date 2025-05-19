@@ -80,6 +80,7 @@ describe('ResenaService', () => {
       calificacion: 5,
       fecha: '2100-12-01',
       estudianteId: 2,
+      actividadId: 1,
     };
 
     mockResenaEntity = {
@@ -124,10 +125,7 @@ describe('ResenaService', () => {
 
   describe('agregarResena', () => {
     it('reseña agregada exitosamente', async () => {
-      const result = await resenaService.agregarResena(
-        mockActividadEntity.id,
-        mockResenaDto,
-      );
+      const result = await resenaService.agregarResena(mockResenaDto);
 
       expect(result).toBe(mockResenaEntity);
       // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -139,10 +137,11 @@ describe('ResenaService', () => {
       jest
         .spyOn(actividadService, 'findActividadById')
         .mockRejectedValue(new NotFoundException());
+      mockResenaDto.actividadId = 1000;
 
-      await expect(
-        resenaService.agregarResena(1000, mockResenaDto),
-      ).rejects.toThrow(NotFoundException);
+      await expect(resenaService.agregarResena(mockResenaDto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('no existe el estudiante', async () => {
@@ -151,26 +150,26 @@ describe('ResenaService', () => {
         .mockRejectedValue(new NotFoundException());
       mockResenaDto.estudianteId = 1000;
 
-      await expect(
-        resenaService.agregarResena(mockResenaEntity.id, mockResenaDto),
-      ).rejects.toThrow(NotFoundException);
+      await expect(resenaService.agregarResena(mockResenaDto)).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('la actividad no está finalizada', async () => {
       mockActividadEntity.estado = 1;
 
-      await expect(
-        resenaService.agregarResena(mockActividadEntity.id, mockResenaDto),
-      ).rejects.toThrow(ConflictException);
+      await expect(resenaService.agregarResena(mockResenaDto)).rejects.toThrow(
+        ConflictException,
+      );
     });
 
     it('el estudiante no está inscrito en la actividad', async () => {
       mockActividadEntity.estudiantes.pop();
       mockEstudianteEntity.actividades.pop();
 
-      await expect(
-        resenaService.agregarResena(mockActividadEntity.id, mockResenaDto),
-      ).rejects.toThrow(ConflictException);
+      await expect(resenaService.agregarResena(mockResenaDto)).rejects.toThrow(
+        ConflictException,
+      );
     });
   });
 });

@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ActividadService } from '../services/actividad.service';
 import { ActividadDto } from '../dtos/actividad.dto';
@@ -22,14 +23,14 @@ export class ActividadController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Get('')
+  @Get(':actividadId')
   findActividadById(@Param('actividadId') actividadId: number) {
     return this.actividadService.findActividadById(actividadId);
   }
 
   @HttpCode(HttpStatus.OK)
   @Get('')
-  findAllActividadesByDate(@Param('fecha') @Body() fecha: string) {
+  findAllActividadesByDate(@Query('fecha') fecha: string) {
     return this.actividadService.findAllActividadesByDate(fecha);
   }
 
