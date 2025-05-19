@@ -1,0 +1,189 @@
+### Estudiante 1 creado
+POST http://{{ip}}:{{port}}/api/v1/estudiante
+Content-Type: application/json
+
+{
+  "numeroCedula": 1000222333,
+  "nombre": "Hari Seldon",
+  "correo": "hari.seldon@mail.com",
+  "programa": "Psicohistoria",
+  "semestre": 6
+}
+
+<> 2025-05-18T234639.201.json
+<> 2025-05-18T234543.500.json
+<> 2025-05-18T234111.201.json
+
+### Estudiante 2 creado
+POST http://{{ip}}:{{port}}/api/v1/estudiante
+Content-Type: application/json
+
+{
+  "numeroCedula": 79123456,
+  "nombre": "Gaal Dornick",
+  "correo": "gaal.dornick@outlook.com.du",
+  "programa": "Matemáticas",
+  "semestre": 10
+}
+
+<> 2025-05-18T234639-1.201.json
+<> 2025-05-18T234543-1.500.json
+<> 2025-05-18T234111-1.201.json
+
+### Estudiante 3 creado
+POST http://{{ip}}:{{port}}/api/v1/estudiante
+Content-Type: application/json
+
+{
+  "numeroCedula": 51234698,
+  "nombre": "Salvor Hardin",
+  "correo": "hardin_salvor@gmail.com.co",
+  "programa": "Gobierno",
+  "semestre": 1
+}
+
+<> 2025-05-18T234639-2.201.json
+<> 2025-05-18T234543-2.500.json
+<> 2025-05-18T234111-2.201.json
+
+### Actividad 1 creada
+POST http://{{ip}}:{{port}}/api/v1/actividad
+Content-Type: application/json
+
+{
+  "titulo": "Plastilina Galáctica",
+  "fecha": "2100-11-30",
+  "cupoMaximo": 2,
+  "estado": 0
+}
+
+<> 2025-05-18T234639-3.201.json
+<> 2025-05-18T234543-3.500.json
+<> 2025-05-18T234112.201.json
+
+### Actividad 2 creada
+POST http://{{ip}}:{{port}}/api/v1/actividad
+Content-Type: application/json
+
+{
+  "titulo": "Artes Espaciales II",
+  "fecha": "2100-11-30",
+  "cupoMaximo": 1,
+  "estado": 0
+}
+
+<> 2025-05-18T234639-4.201.json
+<> 2025-05-18T234543-4.500.json
+<> 2025-05-18T234112-1.201.json
+
+### Actividad 3 creada
+POST http://{{ip}}:{{port}}/api/v1/actividad
+Content-Type: application/json
+
+{
+  "titulo": "Esgrima Marciana",
+  "fecha": "2100-11-30",
+  "cupoMaximo": 1,
+  "estado": 0
+}
+
+<> 2025-05-18T234639-5.201.json
+<> 2025-05-18T234543-5.500.json
+<> 2025-05-18T234112-2.201.json
+
+### Actividad 4 creada
+POST http://{{ip}}:{{port}}/api/v1/actividad
+Content-Type: application/json
+
+{
+  "titulo": "Bolirrana en Júpiter",
+  "fecha": "2100-11-30",
+  "cupoMaximo": 1,
+  "estado": 0
+}
+
+<> 2025-05-18T234639-6.201.json
+<> 2025-05-18T234543-6.500.json
+<> 2025-05-18T234112-3.201.json
+
+### Estudiante 1 inscrito en Actividad 1
+POST http://{{ip}}:{{port}}/api/v1/estudiante/{{estudiante.id.inscrito}}/actividades/{{actividad.id.abierta}}
+Content-Type: application/json
+
+<> 2025-05-18T234543-7.500.json
+
+### Estudiante 1 inscrito en Actividad 2
+POST http://{{ip}}:{{port}}/api/v1/estudiante/{{estudiante.id.inscrito}}/actividades/{{actividad.id.cerrada}}
+Content-Type: application/json
+
+<> 2025-05-18T234543-8.500.json
+
+### Estudiante 1 inscrito en Actividad 3
+POST http://{{ip}}:{{port}}/api/v1/estudiante/{{estudiante.id.inscrito}}/actividades/{{actividad.id.finalizada}}
+Content-Type: application/json
+
+<> 2025-05-18T234543-9.500.json
+
+### Estudiante 1 inscrito en Actividad 4
+POST http://{{ip}}:{{port}}/api/v1/estudiante/{{estudiante.id.inscrito}}/actividades/{{actividad.id.cuposAgotados}}
+Content-Type: application/json
+
+<> 2025-05-18T234639.500.json
+<> 2025-05-18T234543-10.500.json
+<> 2025-05-18T234112.500.json
+
+### Actividad 2 cerrada
+PUT http://{{ip}}:{{port}}/api/v1/actividad/{{actividad.id.cerrada}}/estado
+Content-Type: application/json
+
+{
+  "estado": 1
+}
+
+<> 2025-05-18T234640.200.json
+<> 2025-05-18T234544.500.json
+<> 2025-05-18T234112.200.json
+<> 2025-05-18T232853.200.json
+
+### Actividad 3 cerrada
+PUT http://{{ip}}:{{port}}/api/v1/actividad/{{actividad.id.finalizada}}/estado
+Content-Type: application/json
+
+{
+  "estado": 1
+}
+
+<> 2025-05-18T234640-1.200.json
+<> 2025-05-18T234544-1.500.json
+<> 2025-05-18T234112-1.200.json
+<> 2025-05-18T232853-1.200.json
+
+### Actividad 3 finalizada
+PUT http://{{ip}}:{{port}}/api/v1/actividad/{{actividad.id.finalizada}}/estado
+Content-Type: application/json
+
+{
+  "estado": 2
+}
+
+<> 2025-05-18T234640-2.200.json
+<> 2025-05-18T234544-2.500.json
+<> 2025-05-18T234112-2.200.json
+<> 2025-05-18T232853-2.200.json
+
+### Reseña 1 creada
+POST http://{{ip}}:{{port}}/api/v1/resena/
+Content-Type: application/json
+
+{
+    "estudianteId": {{estudiante.id.inscrito}},
+    "actividadId": {{actividad.id.finalizada}},
+    "comentario": "Estuvo excelente!",
+    "fecha": "2100-11-30",
+    "calificacion": 5
+}
+
+<> 2025-05-18T234640.201.json
+<> 2025-05-18T234544-3.500.json
+<> 2025-05-18T234112-4.201.json
+<> 2025-05-18T232853-7.201.json
